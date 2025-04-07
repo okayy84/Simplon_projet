@@ -1,0 +1,19 @@
+services:
+  app:
+    build: ./etl
+    depends_on:
+      - sqlite
+    volumes:
+      - ./data:/db
+    command: python3 main.py
+    container_name: app-container
+  
+  sqlite:
+    build: ./sqlite
+    volumes:
+      - ./data:/db
+      - ./analyse:/scripts
+    stdin_open: true
+    tty: true
+    command: tail -f /dev/null # Pour rester actif
+    container_name: sqlite-container
